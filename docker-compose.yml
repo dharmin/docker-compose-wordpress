@@ -26,6 +26,9 @@ services:
      - site-network
 
   php:
+    build:
+      context: ./wordpress
+      dockerfile: Dockerfile
     image: rtcamp/wordpress
     depends_on:
       - db
