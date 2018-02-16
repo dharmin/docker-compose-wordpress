@@ -21,21 +21,9 @@ RUN set -ex; \
 RUN pecl install imagick
 RUN docker-php-ext-enable imagick
 
-# Install Memcache
-RUN apt-get install --no-install-recommends -y  && \
-	mkdir -p /usr/src/php/ext && \
-	cd /usr/src/php/ext/ && \
-	curl -sSL -o php7.zip https://github.com/websupport-sk/pecl-memcache/archive/NON_BLOCKING_IO_php7.zip && \
-	unzip php7.zip && \
-	mv pecl-memcache-NON_BLOCKING_IO_php7 memcache && \
-	docker-php-ext-configure memcache --with-php-config=/usr/local/bin/php-config && \
-	docker-php-ext-install memcache && \
-	rm -rf /tmp/pecl-memcache-php7 php7.zip
-RUN docker-php-ext-install memcache
-
 # Install Memcached
 RUN apt-get update -y \ 
-    && apt-get install git memcached -y \
+    && apt-get install git -y \
     && cd ~ \
     && git clone https://github.com/php-memcached-dev/php-memcached.git \
     && cd php-memcached \
@@ -45,7 +33,6 @@ RUN apt-get update -y \
     && make \
     && make install \
     && echo "extension=memcached.so" > /usr/local/etc/php/conf.d/ext-memcached.ini 
-CMD service memcached start && /bin/bash
 
 # Donwload and install composer
 RUN curl -sSL "https://getcomposer.org/installer" | php \
