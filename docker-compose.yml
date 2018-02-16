@@ -43,6 +43,14 @@ services:
     networks:
      - site-network
 
+  memcached:
+    image: library/memcached
+    depends_on:
+      - php
+    restart: always
+    networks:
+      - site-network
+
   nginx:
     image: nginx:latest
     depends_on:
